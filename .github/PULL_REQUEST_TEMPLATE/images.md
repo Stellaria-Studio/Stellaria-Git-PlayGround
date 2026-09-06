@@ -1,36 +1,32 @@
 <!-- pr-type: images -->
-<!-- 请勿删除以上 pr-type 行 -->
+<!-- tuition: dress -->
+<!-- 请勿删除以上标记；内容检查与 Credential workflow 会读取它们。 -->
 
-<details>
-<summary>第一次提交？点我查看新手说明 / First time? Click for guide</summary>
+# 👗 Photo / Dress Tuition
 
-请先阅读 [新手指南](https://github.com/Cute-Dress/Dress/blob/master/GUIDE.md)。
-也可参考 [已合并的 PR](https://github.com/Cute-Dress/Dress/pulls?q=is%3Apr+is%3Amerged)。
+欢迎来到 Stellaria Git PlayGround 的祖传学费通道（doge）。
 
-Please read the [Beginner Guide](https://github.com/Cute-Dress/Dress/blob/master/GUIDE.md).
-See [merged PRs](https://github.com/Cute-Dress/Dress/pulls?q=is%3Apr+is%3Amerged) for examples.
+第一次提交建议先阅读 [README](https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround/blob/master/README.md)、[CONTRIBUTING](https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround/blob/master/CONTRIBUTING.md) 与 [GUIDE](https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround/blob/master/GUIDE.md)。
 
-</details>
-
-**PR 类型**：图片提交 / Photo submission
-
-**简单描述**（可选）：
+**简单描述（可选）：**
 
 
-### 自查清单 / Checklist
+## 自查清单 / Checklist
 
-请自行确认并勾选。Please check each item yourself.
+- [ ] 这是我本人、且我有权公开提交的照片；不存在盗图或未授权转载
+- [ ] 图片适合公开互联网，不包含裸露、性暗示或私密影像
+- [ ] 已移除 GPS、地址、联系方式等高敏感 EXIF（见 [EXIF.md](https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround/blob/master/EXIF.md)）
+- [ ] 图片已尽量压缩至 1 MiB 以内
+- [ ] 文件位于正确的 `A-Z/#/昵称/` 目录，例如 `M/moe/photo.webp`
+- [ ] 我理解 PR 合并后会公开保留在 Git 历史中，并可能获得 `TUITION_PAID_DRESS`
 
-- [ ] 图片已压缩至 1 MiB 以内 / Images are under 1 MiB（见 [CONTRIBUTING.md](https://github.com/Cute-Dress/Dress/blob/master/CONTRIBUTING.md)）
-- [ ] 已移除高敏感 EXIF（GPS/地址/联系方式）/ High-sensitivity EXIF removed（[字段说明](https://github.com/Cute-Dress/Dress/blob/master/EXIF.md) · [清理方法](https://github.com/Cute-Dress/Dress/blob/master/CONTRIBUTING.md)）
-- [ ] 文件在对应首字母目录下 `A-Z/#/昵称/` / Folder under matching `A-Z/#`（见 [GUIDE.md](https://github.com/Cute-Dress/Dress/blob/master/GUIDE.md)；无需强制 GitHub ID）
-  - 正确: `M/moe/photo.jpg` 或 `#/233/photo.jpg`
-  - 错误: `moe/photo.jpg`（缺少首字母目录）
-- [ ] 图片为本人原创，未盗用他人作品 / Images are original and not stolen from others
+> 维护者合并本 PR 即表示对本次 Dress Tuition 类型完成了人工确认。Credential workflow 不会自行识别“照片里穿的到底算不算女装”。
 
 ---
 
-本次不是交图？请改用对应模板（点击后重新载入） / Not a photo PR? Switch template:
+不想交照片？完全没问题，请改用 [Creative Tuition](?expand=1&template=creative.md)。
+
+其他模板：
 
 - [CI / 工作流](?expand=1&template=ci.md)
 - [文档 / Docs](?expand=1&template=docs.md)
