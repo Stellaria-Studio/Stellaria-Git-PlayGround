@@ -19,7 +19,7 @@
     <section class="panel lookup" aria-labelledby="lookup-title">
       <div>
         <h2 id="lookup-title">Credential lookup</h2>
-        <p>输入 GitHub ID、<code>@GitHub-ID</code> 或 <code>SPC-GIT-&lt;GitHub-ID&gt;</code>。</p>
+        <p>输入 GitHub ID、<code>@GitHub-ID</code> 或 <code>SPC-GIT-&lt;GitHub-ID&gt;</code>。改过 GitHub 用户名也没关系，Mission Control 会尝试沿着 alias 找到现在的你。</p>
       </div>
       <form id="lookup-form">
         <input id="credential-input" name="credential" autocomplete="off" spellcheck="false" placeholder="SPC-GIT-example" aria-label="Credential ID or GitHub login" />
@@ -56,8 +56,16 @@
           <strong id="aethra-pass">INACTIVE</strong>
         </article>
         <article class="metric">
+          <span>SIGNAL SCORE</span>
+          <strong id="signal-score">0</strong>
+        </article>
+        <article class="metric">
           <span>UPDATED</span>
           <strong id="updated-at">—</strong>
+        </article>
+        <article class="metric">
+          <span>SUBJECT</span>
+          <strong id="subject-id">—</strong>
         </article>
       </div>
 
@@ -69,6 +77,11 @@
       <div class="section-block">
         <h3>Prestige flags</h3>
         <div id="prestige" class="chips muted-chips"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Known aliases</h3>
+        <div id="aliases" class="chips muted-chips"></div>
       </div>
 
       <div class="section-block">
@@ -89,10 +102,28 @@
       </div>
     </section>
 
+    <section class="panel flight-board" aria-labelledby="flight-board-title">
+      <div class="flight-board-head">
+        <div>
+          <div class="eyebrow">PUBLIC TELEMETRY</div>
+          <h2 id="flight-board-title">Mission Control Flight Board</h2>
+          <p>所有 canonical Credential 的公开排行榜。排序规则主要是 Clearance 和成就数量，所以请不要拿它去写简历的“全球排名”（doge）。</p>
+        </div>
+        <div class="board-stats">
+          <span>ACTIVE CREDENTIALS</span>
+          <strong id="credential-count">—</strong>
+        </div>
+      </div>
+      <div id="roster" class="roster">
+        <div class="empty">Waiting for telemetry…</div>
+      </div>
+    </section>
+
     <section class="panel notes">
       <h2>这张“证”到底证明什么？</h2>
       <p><strong>VERIFIED</strong> 的含义是：页面从 <code>Stellaria-Studio/Stellaria-Git-PlayGround</code> 的公开 Credential 记录中读取到了与输入相匹配的数据，并检查了 issuer / holder / credential ID。它不是政府证件、职业资格、员工身份或仓库权限。</p>
       <p>但如果显示 <strong>AETHRA_FANWORK_PASS · ACTIVE</strong>，请进一步阅读对应许可条款；那一项确实不是纯空气。</p>
+      <p class="easter-hint">Mission Control 内部流传着一个毫无实际意义的古老键盘序列。↑ ↑ ↓ ↓ ← → ← → B A</p>
       <div class="links">
         <a href="https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround" target="_blank" rel="noreferrer">Repository</a>
         <a href="./CREDENTIALS.md">Credential spec</a>
@@ -100,6 +131,11 @@
         <a href="./AETHRA-FANWORK-PASS.md">Aethra Fanwork Pass</a>
       </div>
     </section>
+
+    <div id="doge-mode" class="doge-mode hidden" role="status" aria-live="polite">
+      <strong>👗 TUITION PROTOCOL DETECTED</strong>
+      <span>Mission Control has absolutely no idea why this was considered a necessary feature.</span>
+    </div>
 
     <footer>
       <span>Dream. Commit. Push. Become.</span>
