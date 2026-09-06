@@ -33,6 +33,7 @@ on:
         type: string
 
 permissions:
+  actions: write
   contents: write
   issues: write
 
@@ -100,6 +101,11 @@ jobs:
             }
 
             const record = JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
+            if (record.status === 'renamed' && record.renamed_to) {
+              core.setFailed(`@${login} is an alias. Grant the achievement to current holder @${record.renamed_to}.`);
+              return;
+            }
+
             const achievements = new Set(Array.isArray(record.achievements) ? record.achievements : []);
             const alreadyHad = achievements.has(achievement);
             achievements.add(achievement);
@@ -164,3 +170,16 @@ jobs:
             }
 
             core.notice(`Granted ${achievement} to @${login}. Bonus count: ${bonusCount}.`);
+
+      - name: Reconcile derived badge and Mission Control roster
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'stellaria_credentials.yml',
+              ref: 'master',
+            });
+            core.notice('Credential reconciliation dispatched.');
