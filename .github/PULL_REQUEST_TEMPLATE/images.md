@@ -18,9 +18,12 @@
 - [ ] 已移除 GPS、地址、联系方式等高敏感 EXIF（见 [EXIF.md](https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround/blob/master/EXIF.md)）
 - [ ] 图片已尽量压缩至 1 MiB 以内
 - [ ] 文件位于正确的 `A-Z/#/昵称/` 目录，例如 `M/moe/photo.webp`
-- [ ] 我理解 PR 合并后会公开保留在 Git 历史中，并可能获得 `TUITION_PAID_DRESS`
+- [ ] 我理解 PR 合并后会公开保留在 Git 历史中
+- [ ] 我理解 `TUITION_PAID_DRESS` / Aethra Fanwork Pass 不会仅凭这行模板标记自动发放；需要维护者实际查看并完成 Tuition Verification
 
-> 维护者合并本 PR 即表示对本次 Dress Tuition 类型完成了人工确认。Credential workflow 不会自行识别“照片里穿的到底算不算女装”。
+> **为什么多一道人工核验？** `TUITION_PAID_DRESS` 可以成为 Aethra Fanwork Pass 的快捷解锁条件，所以 Mission Control 不再相信“PR Body 里写了 `tuition: dress`”这一件事。维护者需要实际看过贡献，再运行 **Verify Playground Tuition** Workflow 写入 `tuition:verified:dress`，Credential Reconciler 才会认这笔学费。
+
+Automation 只检查目录、图片文件和 GitHub evidence，不会用计算机视觉替维护者判断“照片里是谁”“穿的算不算女装”。
 
 ---
 
