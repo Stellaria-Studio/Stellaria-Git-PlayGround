@@ -30,40 +30,77 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout trusted master
-        uses: actions/checkout@v4
+      - name: Assemble site via GitHub API
+        uses: actions/github-script@v7
         with:
-          ref: master
-          persist-credentials: false
-          fetch-depth: 1
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const { owner, repo } = context.repo;
+            const ref = 'master';
+            const out = path.join(process.env.GITHUB_WORKSPACE, '_site');
 
-      - name: Assemble static verification site
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf _site
-          mkdir -p _site/credentials _site/badges
-          cp -R site/. _site/
-          touch _site/.nojekyll
+            fs.rmSync(out, { recursive: true, force: true });
+            fs.mkdirSync(path.join(out, 'credentials'), { recursive: true });
+            fs.mkdirSync(path.join(out, 'badges'), { recursive: true });
 
-          if compgen -G 'credentials/*.json' > /dev/null; then
-            cp credentials/*.json _site/credentials/
-          fi
-          if compgen -G 'badges/*.svg' > /dev/null; then
-            cp badges/*.svg _site/badges/
-          fi
+            async function get(remotePath) {
+              const response = await github.rest.repos.getContent({
+                owner,
+                repo,
+                path: remotePath,
+                ref,
+              });
+              return response.data;
+            }
 
-          cp CREDENTIALS.md _site/CREDENTIALS.md
-          cp ACHIEVEMENTS.md _site/ACHIEVEMENTS.md
-          cp AETHRA-FANWORK-PASS.md _site/AETHRA-FANWORK-PASS.md
+            async function writeRemoteFile(remotePath, localPath) {
+              const data = await get(remotePath);
+              if (Array.isArray(data) || data.type !== 'file') {
+                throw new Error(`${remotePath} is not a file`);
+              }
+              const bytes = Buffer.from(data.content || '', 'base64');
+              fs.mkdirSync(path.dirname(localPath), { recursive: true });
+              fs.writeFileSync(localPath, bytes);
+            }
 
-          cat > _site/build.json <<EOF
-          {
-            "repository": "${GITHUB_REPOSITORY}",
-            "commit": "${GITHUB_SHA}",
-            "built_at": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          }
-          EOF
+            async function copyDirectory(remoteDir, localDir, predicate = () => true) {
+              let entries = [];
+              try {
+                const data = await get(remoteDir);
+                if (!Array.isArray(data)) throw new Error(`${remoteDir} is not a directory`);
+                entries = data;
+              } catch (error) {
+                if (error.status === 404) return;
+                throw error;
+              }
+
+              for (const entry of entries) {
+                if (entry.type !== 'file' || !predicate(entry.name)) continue;
+                await writeRemoteFile(entry.path, path.join(localDir, entry.name));
+              }
+            }
+
+            await copyDirectory('site', out);
+            await copyDirectory('credentials', path.join(out, 'credentials'), name => name.endsWith('.json'));
+            await copyDirectory('badges', path.join(out, 'badges'), name => name.endsWith('.svg'));
+
+            await writeRemoteFile('CREDENTIALS.md', path.join(out, 'CREDENTIALS.md'));
+            await writeRemoteFile('ACHIEVEMENTS.md', path.join(out, 'ACHIEVEMENTS.md'));
+            await writeRemoteFile('AETHRA-FANWORK-PASS.md', path.join(out, 'AETHRA-FANWORK-PASS.md'));
+
+            fs.writeFileSync(path.join(out, '.nojekyll'), '');
+            fs.writeFileSync(
+              path.join(out, 'build.json'),
+              `${JSON.stringify({
+                repository: `${owner}/${repo}`,
+                commit: context.sha,
+                built_at: new Date().toISOString(),
+                assembly: 'github-api-no-checkout',
+              }, null, 2)}\n`
+            );
+
+            core.notice('Static verifier assembled without cloning the multi-gigabyte photo repository.');
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
