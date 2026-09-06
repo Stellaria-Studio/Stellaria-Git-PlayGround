@@ -10,6 +10,7 @@ on:
       - 'CREDENTIALS.md'
       - 'ACHIEVEMENTS.md'
       - 'AETHRA-FANWORK-PASS.md'
+      - 'SECURITY-MODEL.md'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -88,6 +89,7 @@ jobs:
             await writeRemoteFile('CREDENTIALS.md', path.join(out, 'CREDENTIALS.md'));
             await writeRemoteFile('ACHIEVEMENTS.md', path.join(out, 'ACHIEVEMENTS.md'));
             await writeRemoteFile('AETHRA-FANWORK-PASS.md', path.join(out, 'AETHRA-FANWORK-PASS.md'));
+            await writeRemoteFile('SECURITY-MODEL.md', path.join(out, 'SECURITY-MODEL.md'));
 
             fs.writeFileSync(path.join(out, '.nojekyll'), '');
             fs.writeFileSync(
@@ -100,7 +102,7 @@ jobs:
               }, null, 2)}\n`
             );
 
-            core.notice('Static verifier assembled without cloning the multi-gigabyte photo repository.');
+            core.notice('Static Mission Control assembled without cloning the multi-gigabyte photo repository.');
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

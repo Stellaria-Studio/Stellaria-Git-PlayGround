@@ -1,0 +1,8 @@
+# Mission Control trust boundary. CODEOWNERS becomes enforcement only when branch/ruleset review rules are enabled.
+/.github/workflows/ @Aethra2007
+/.github/scripts/ @Aethra2007
+/credentials/ @Aethra2007
+/badges/ @Aethra2007
+/CREDENTIALS.md @Aethra2007
+/SECURITY-MODEL.md @Aethra2007
+/AETHRA-FANWORK-PASS.md @Aethra2007

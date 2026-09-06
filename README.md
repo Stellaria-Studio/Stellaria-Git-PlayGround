@@ -13,38 +13,52 @@
 
 项目目标很简单：用一次真实但低风险的贡献，把 **Fork → Clone → Branch → Commit → Push → Pull Request → Review → Merge** 走完整。不会编程也完全可以参加。
 
-与此同时，我们似乎不小心把一个 Git 教程工程化成了 **Mission Control + Credential + Achievement + SVG Badge + 上游同步系统**。（doge）
+与此同时，我们似乎不小心把一个 Git 教程工程化成了：
+
+> **Mission Control + Credential + Achievement + SVG Badge + Flight Board + 授权登记 + 上游同步 + 学费协议 + 大杂烩实验室**
+
+（doge）
 
 ---
 
 ## 🎓 学费：任选一种
 
-你不需要真的给 Stellaria Studio 交钱。这里的“学费”是一个需要通过 Git 提交的贡献物。
+你不需要真的给 Stellaria Studio 交钱。这里的“学费”是一份通过 Git 提交的公开贡献物。
 
 ### 👗 A. 传统学费 · Dress Tuition
 
-继承上游 Dress 的祖传业务：提交**至少一张你本人、由你有权公开的女装 / Cross-dressing 照片**。
+继承上游 Dress 的祖传业务：提交**至少一张你本人、且由你有权公开的女装 / Cross-dressing 照片**。
 
-- 性别不限，萌即正义。
-- 不接受盗图或未经授权的转载。
-- 图片请尽量控制在 1 MiB 以内。
-- 提交前移除 GPS、地址、联系方式等高敏感 EXIF。
-- 只接受适合公开互联网的普通照片；不要提交裸露、性暗示或私密影像。
+- 性别不限，萌即正义；
+- 不接受盗图或未经授权的转载；
+- 图片请尽量控制在 1 MiB 以内；
+- 提交前移除 GPS、地址、联系方式等高敏感 EXIF；
+- 只接受适合公开互联网的普通照片，不要提交裸露、性暗示或私密影像；
 - 照片仍按 `A-Z/#/昵称/` 的上游目录规则存放。
 
-这条路线会获得隐藏程度约等于“写在 README 正中央”的成就：**`TUITION_PAID_DRESS 👗`**。
+这条路线可以获得：
+
+```text
+TUITION_PAID_DRESS 👗
+```
+
+并成为 **Aethra Fanwork Pass** 的祖传捷径。
+
+但因为这个奖励现在确实有一点实际授权效果，**PR 里自己写 `<!-- tuition: dress -->` 已经不够了**：维护者需要实际查看贡献，并运行 **Verify Playground Tuition** Workflow，写入 `tuition:verified:dress` 后，Mission Control 才会承认这笔学费。
+
+简单说：可以整活，但不能自己给自己 P 一张许可证。（doge）
 
 ### 🌟 B. Stellaria 创意学费 · Creative Tuition
 
 不想交女装照？完全没问题。提交一份**你自己创作、且有权公开的小作品**也可以完成学费：
 
-- 一张原创插画、表情包或小型视觉作品；
-- 一段短文、设定、教程或有意思的 Markdown；
+- 原创插画、表情包或小型视觉作品；
+- 短文、设定、教程或有意思的 Markdown；
 - 小型非执行创意资产（例如 MIDI、JSON、SVG 等）；
 - 对本 PlayGround 有实际价值的文档、模板或工具改进；
 - 其他维护者认为“确实有点东西”的原创贡献。
 
-创意学费建议放在：
+放在：
 
 ```text
 playground/<你的 GitHub ID>/
@@ -57,7 +71,11 @@ playground/example/README.md
 playground/example/art.webp
 ```
 
-这条路线获得 **`TUITION_PAID_CREATIVE 🌟`**。
+这条路线获得：
+
+```text
+TUITION_PAID_CREATIVE 🌟
+```
 
 > 女装从来不是加入或学习 Git 的强制条件。两条学费路线都能正常参与；只是其中一条保留了上游传统，以及一个非常离谱的小福利。
 
@@ -65,9 +83,22 @@ playground/example/art.webp
 
 ---
 
-## 🛰️ Mission Control：你的 Git 行为现在有“飞行记录”了
+## 🛰️ Mission Control：现在甚至有多级页面了
 
-每个被合并的有效 PR 都可能更新一份 **Stellaria Playground Credential（SPC）**。
+官方入口：
+
+**https://stellaria-studio.github.io/Stellaria-Git-PlayGround/**
+
+页面结构：
+
+- **我的证** `/` — 默认显示你上次连接的 Credential；
+- **详细档案** `/details.html` — Proof、GitHub Evidence、Aliases、Tuition、Pass；
+- **排行榜** `/leaderboard.html` — Mission Control Flight Board；
+- **成就图鉴** `/achievements.html` — Core / Tuition / Bonus + 动态稀有度；
+- **授权与荣誉** `/passes.html` — Aethra Fanwork Pass 公共登记；
+- **大杂烩实验室** `/lab.html` — 很多完全没必要但很重要的功能。
+
+首次输入自己的 GitHub ID / Credential 后，这台浏览器会记住它；以后打开首页就会优先显示“自己的证”。
 
 机器可读记录：
 
@@ -81,22 +112,41 @@ credentials/<github-login>.json
 badges/<github-login>.svg
 ```
 
-在线验证页：
+---
 
-**https://stellaria-studio.github.io/Stellaria-Git-PlayGround/**
+## 🔐 “别自己编一张糊弄过去”安全模型
 
-验证页可以输入 GitHub ID、`@GitHub-ID` 或 `SPC-GIT-<GitHub-ID>`，然后显示：
+Credential schema v4 加入了一个简单但够用的 canonical integrity 机制：
 
-- Credential ID；
-- Callsign；
-- `SPC-CL-*` Clearance；
-- Core Achievement 进度；
-- Tuition / Prestige；
-- Merge Evidence；
-- Aethra Fanwork Pass 状态；
-- 可复制的 GitHub Profile SVG Badge。
+```text
+SPC-CANONICAL-SHA256-V1
+```
 
-`VERIFIED` 的意思只是“Stellaria 官方公开仓库存在匹配的 canonical record”，不是现实世界身份认证。
+Mission Control 会同时检查：
+
+1. Record 是否存在于官方 `credentials/index.json` Registry；
+2. stable GitHub subject 是否匹配；
+3. Record Proof 是否等于 Registry Proof；
+4. 浏览器重新计算的 SHA-256 是否等于两者；
+5. canonical repository / issuer 是否匹配。
+
+官方 Record / Registry / Browser recompute 三方一致时才显示：
+
+```text
+LIVE · OFFICIAL · INTEGRITY OK
+```
+
+此外：
+
+- `credentials/*.json` 与 `badges/*.svg` 是生成物；普通 PR 手改会被 **Canonical Guard** 拦截；
+- Bonus Achievement 需要公开 GitHub Evidence + maintainer Grant Workflow；
+- Dress Tuition 的特殊授权捷径需要 maintainer Tuition Verification；
+- `REVIEW_PASS` 必须来自与 PR 作者不同的 GitHub 用户；
+- ACTIVE Aethra Pass 会获得独立 `Authorization ID` 并被纳入 canonical proof。
+
+**截图不是授权凭证。** 截图当然可以被 P；遇到争议时直接开官方验证链接重新查。
+
+完整说明见 [SECURITY-MODEL.md](SECURITY-MODEL.md)。
 
 ---
 
@@ -109,7 +159,7 @@ Core Achievements：
 | `FIRST_CONTACT` | 第一个 PR 被合并 |
 | `BRANCH_EXPLORER` | 从非默认分支 / Fork 完成一次合并 |
 | `CHECKLIST_KEEPER` | PR 自查清单完整且全部勾选 |
-| `REVIEW_PASS` | 至少获得一次 `APPROVED` Review |
+| `REVIEW_PASS` | 至少获得一次其他 GitHub 用户的 `APPROVED` Review |
 | `RETURNING_CONTRIBUTOR` | 至少有 2 个 PR 被合并 |
 | `GREEN_LIGHT` | PR Head 上检测到的 Checks 全部成功 / neutral / skipped |
 
@@ -127,7 +177,7 @@ SPC-CL-6  PlayGround Flight Clearance
 
 名字已经开始像可以刷卡进舰桥了，**实际一丁点仓库权限都不会自动增加**。（doge）
 
-另外还有：
+Bonus 包括：
 
 - `CONFLICT_SURVIVOR`
 - `REBASE_ENJOYER`
@@ -141,24 +191,32 @@ SPC-CL-6  PlayGround Flight Clearance
 - `HOTFIX_SURGEON`
 - `PATCH_CARTOGRAPHER`
 
-Bonus 成就可通过仓库的 **Achievement Claim** Issue Form 带公开证据申请，由维护者审核后使用专门的 Grant Workflow 写入 Credential。
-
 完整目录见 [ACHIEVEMENTS.md](ACHIEVEMENTS.md)，机制见 [CREDENTIALS.md](CREDENTIALS.md)。
 
 ---
 
-## 📟 Callsign
+## 📟 Callsign / Signal Score
 
-Credential v2 会根据你的 GitHub Login 确定性生成一个 Mission Control Callsign，例如：
+Callsign 根据 GitHub Login 的 SHA-256 摘要确定性生成，例如：
 
 ```text
 Aster-Vector-7C2D
 Nebula-Pilot-A91F
 ```
 
-同一个 GitHub ID 会稳定得到同一个 Callsign。
+它不是密钥，也没有任何安全意义。真正的完整性验证看 canonical proof。
 
-它不是密钥，也没有任何安全意义。它存在的主要理由是：**如果都做成 Credential 了，不发个呼号总觉得少了点什么。**
+排行榜还会给你一个 **Signal Score**：
+
+```text
+Core      +100 each
+Bonus      +25 each
+Tuition    +60 each
+Prestige   +10 each
+Aethra Pass +500
+```
+
+这个算法没有学术价值，但确实可以让 Flight Board 看起来更像 Flight Board。
 
 ---
 
@@ -176,7 +234,7 @@ https://raw.githubusercontent.com/Stellaria-Studio/Stellaria-Git-PlayGround/mast
 [![Stellaria SPC](https://raw.githubusercontent.com/Stellaria-Studio/Stellaria-Git-PlayGround/master/badges/<github-login>.svg)](https://stellaria-studio.github.io/Stellaria-Git-PlayGround/?id=SPC-GIT-<github-login>)
 ```
 
-如果 Aethra Fanwork Pass 激活，Badge 也会把 `AETHRA PASS` 挂上去。
+Badge 的 SVG `<title>` 还包含当前 canonical proof 的短摘要。
 
 ---
 
@@ -186,20 +244,60 @@ Stellaria Studio 决定把这个梗工程化到底。
 
 满足以下任意一项：
 
-1. 获得 **`TUITION_PAID_DRESS 👗`**；或
-2. 集齐全部 6 个 Core Git Achievements：`FIRST_CONTACT`、`BRANCH_EXPLORER`、`CHECKLIST_KEEPER`、`REVIEW_PASS`、`RETURNING_CONTRIBUTOR`、`GREEN_LIGHT`；
+1. 获得经过维护者核验的 **`TUITION_PAID_DRESS 👗`**；或
+2. 集齐全部 6 个 Core Git Achievements；
 
 即可在 Credential 中解锁：
 
-> **AETHRA_FANWORK_PASS · ACTIVE**
+```text
+AETHRA_FANWORK_PASS · ACTIVE
+Authorization ID: AETHRA-<github-user-id>-<checksum>
+```
 
-它不是“看起来像证书但什么都没有”的纯空气：在 Stellaria Studio 或相关权利人实际拥有 / 控制的权利范围内，Pass 持有人会获得对 **李观澜（Aethra）** 的广泛二次创作许可，包括创作、改编、发布、展示、传播，以及对自己二创作品的合理商业化。
+它不是纯空气 Badge：在 Stellaria Studio 或相关权利人实际拥有 / 控制的权利范围内，Pass 持有人会获得对 **李观澜（Aethra）** 的广泛二次创作许可，包括创作、改编、发布、展示、传播，以及对自己二创作品的合理商业化。
 
-它**不会转让原作著作权或 Stellaria 商标权，也不会把持有人变成官方代表**。完整边界与许可文本见 [AETHRA-FANWORK-PASS.md](AETHRA-FANWORK-PASS.md)。
+它**不会转让原作著作权或 Stellaria 商标权，也不会把持有人变成官方代表**。
 
-简单说：
+只有官方 Mission Control 的 canonical Record / Registry / Security Seal 全部通过时，页面才显示：
 
-> 会 Git 的可以肝满成就；愿意继承 Dress 传统的可以走隐藏捷径。Stellaria Studio 慷慨地发出一张真的稍微有点用的许可证。（doge）
+```text
+ACTIVE · VERIFIED
+```
+
+完整条款见 [AETHRA-FANWORK-PASS.md](AETHRA-FANWORK-PASS.md)。
+
+---
+
+## 👗 Tuition Protocol
+
+在 Mission Control 任意页面输入古老序列：
+
+```text
+↑ ↑ ↓ ↓ ← → ← → B A
+```
+
+你会得到：
+
+> **👗 学费协议已触发 · TUITION PROTOCOL DETECTED**
+>
+> 任务控制中心完全不知道为什么这会被认为是一项必要功能；更无法解释为什么它现在还有中英文双语版本。（doge）
+
+是的，它现在真的有中文版了。
+
+---
+
+## 🧪 大杂烩实验室
+
+`/lab.html` 目前包括：
+
+- Tuition Protocol 手动触发；
+- “紧急合并主干”按钮——永远 ACCESS DENIED；
+- 今日 Git 运势；
+- Force Push 模拟器；
+- Enterprise 化旋钮；
+- Mission Control 官话生成器。
+
+所有危险按钮均为纯前端模拟，不会真的碰 GitHub 仓库。
 
 ---
 
@@ -210,10 +308,8 @@ Stellaria Studio 决定把这个梗工程化到底。
 为了避免把公开上游的结构性变化或 Workflow 直接无人值守灌进 Stellaria：
 
 - **只有 `A-Z/` 与 `#/` 传统贡献目录发生变化时允许自动 Merge**；
-- README、License、文档、`.github/`、模板、Credential、Pages 等任何结构性路径出现变化，都会留下 PR 等待人工 Review；
+- README、License、文档、`.github/`、模板、Credential、Pages 等结构性路径出现变化，都会留下 PR 等待人工 Review；
 - Merge conflict 永远不会被 Bot 自作主张解决，而是开 Issue 通知 Mission Control。
-
-也就是说：照片等祖传内容能比较丝滑地跟着上游走；会影响 Stellaria 自己规则和自动化的东西必须有人看一眼。
 
 详情见 [UPSTREAM.md](UPSTREAM.md)。
 
@@ -243,8 +339,6 @@ git push -u origin playground/<your-id>
 ```
 
 然后等待 CI、Review，以及命运的 `Merge`。
-
-第一次 PR 还会收到来自 **Stellaria PlayGround Mission Control** 的欢迎 Telemetry。
 
 ---
 
@@ -276,14 +370,16 @@ Fork 时已经存在的照片、文档、提交与贡献记录均来自上游项
 
 ---
 
-## 🧪 PlayGround 原则
+## 🧭 PlayGround 原则
 
 1. **真的学 Git。** 梗可以很浓，流程必须是真的。
 2. **奖励可以离谱，权限不能含糊。** Credential 不会偷偷变成成员身份或管理员权限。
-3. **可验证优先。** 成就尽量绑定 PR / Commit / Check 等公开证据。
-4. **隐私优先。** 公开仓库里不该出现的东西，不要因为“整活”而提交。
-5. **上游有来源，Stellaria 有边界。** Fork 历史、第三方内容和额外许可各自说清楚。
-6. **名字可以非常高级。** 这一条不需要解释。
+3. **可验证优先。** 成就与授权尽量绑定公开 GitHub Evidence。
+4. **不能靠自己编一张。** Canonical 记录由 trusted Workflow 生成，特殊授权需要额外 verification gate。
+5. **隐私优先。** 公开仓库里不该出现的东西，不要因为“整活”而提交。
+6. **上游有来源，Stellaria 有边界。** Fork 历史、第三方内容和额外许可各自说清楚。
+7. **名字可以非常高级。** 这一条不需要解释。
+8. **没必要但很好玩的功能可以进 Lab。** 本仓库已经放弃治疗。（doge）
 
 ---
 

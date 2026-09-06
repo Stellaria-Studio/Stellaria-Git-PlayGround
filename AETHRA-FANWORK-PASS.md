@@ -1,14 +1,14 @@
 # Aethra Fanwork Pass
 
-**Version 1.0 · Stellaria Git PlayGround**
+**Version 1.1 · Stellaria Git PlayGround**
 
-> 这是一份针对符合资格的 Playground 贡献者提供的额外二次创作许可，不是著作权转让、商标授权书、雇佣关系证明或 Stellaria Studio 成员证明。
+> 这是一份针对符合资格的 PlayGround 贡献者提供的额外二次创作许可，不是著作权转让、商标授权书、雇佣关系证明或 Stellaria Studio 成员证明。
 
 ## 1. 谁可以获得
 
-当公开 Credential 记录满足以下任意一项时，`AETHRA_FANWORK_PASS` 可以标记为 `ACTIVE`：
+当 Stellaria 官方 canonical Credential 满足以下任意一项时，`AETHRA_FANWORK_PASS` 可以标记为 `ACTIVE`：
 
-1. 已获得 `TUITION_PAID_DRESS`；或
+1. 已获得经过维护者人工核验的 `TUITION_PAID_DRESS`；或
 2. 已集齐全部 Core Git Achievements：
    - `FIRST_CONTACT`
    - `BRANCH_EXPLORER`
@@ -17,7 +17,27 @@
    - `RETURNING_CONTRIBUTOR`
    - `GREEN_LIGHT`
 
-Credential 的机器可读记录位于 `credentials/<github-login>.json`。
+### Dress Tuition 的核验门
+
+仅在 PR Body 写：
+
+```text
+<!-- tuition: dress -->
+```
+
+**不构成授权资格。**
+
+Dress route 必须包含实际图片贡献，并由具备仓库写权限的维护者实际查看后运行 **Verify Playground Tuition** Workflow，写入：
+
+```text
+tuition:verified:dress
+```
+
+随后 PR 被 Merge，Credential Reconciler 才会把 `TUITION_PAID_DRESS` 与 Pass 写入 canonical record。
+
+### Core route 的核验门
+
+`REVIEW_PASS` 必须来自与 PR 作者不同的 GitHub 用户所提交的 `APPROVED` Review，因此 PR 作者不能靠自己给自己的 PR 点一下就凭空凑齐全套 Core。
 
 ## 2. 授权对象
 
@@ -27,7 +47,7 @@ Credential 的机器可读记录位于 `credentials/<github-login>.json`。
 
 ## 3. 获得的二创权限
 
-在上述权利范围内，持有 `ACTIVE` Pass 的贡献者获得一项**非独占、全球范围、免版税**的二次创作许可，可无需逐次向 Stellaria Studio 申请，包括：
+在上述权利范围内，持有 `ACTIVE · VERIFIED` Pass 的贡献者获得一项**非独占、全球范围、免版税**的二次创作许可，可无需逐次向 Stellaria Studio 申请，包括：
 
 - 绘制插画、漫画、表情包、壁纸及视觉作品；
 - 创作小说、短篇、同人设定、翻译或改写；
@@ -65,13 +85,48 @@ Credential 的机器可读记录位于 `credentials/<github-login>.json`。
 
 如果二创涉及第三方素材、现实人物、合作角色或其他外部 IP，你仍需自行获得相应授权。
 
-## 7. 持续性与版本更新
+## 7. 如何验证 Pass
 
-- Pass 的资格以仓库中公开 Credential 的 `aethra_fanwork_pass.active` 状态为准。
-- Stellaria Studio 可以对未来版本的规则进行澄清或更新。
+每个 ACTIVE Pass 会在 canonical Credential 中包含：
+
+```text
+Authorization ID: AETHRA-<github-user-id>-<checksum>
+```
+
+以及 Credential schema v4 的：
+
+```text
+SPC-CANONICAL-SHA256-V1
+```
+
+Security Seal。
+
+官方在线验证地址：
+
+```text
+https://stellaria-studio.github.io/Stellaria-Git-PlayGround/
+```
+
+### 有效验证应同时满足
+
+1. Credential 存在于 `Stellaria-Studio/Stellaria-Git-PlayGround` canonical registry；
+2. `aethra_fanwork_pass.active == true`；
+3. 存在 `authorization_id`；
+4. Record Proof、Registry Proof 与浏览器重新计算的 SHA-256 一致；
+5. stable GitHub subject 匹配；
+6. Mission Control 显示 `ACTIVE · VERIFIED`。
+
+**截图本身不构成验证。** 截图可以被编辑，Fork 也可以被任意修改。发生争议时，以官方 canonical verifier 的实时结果与仓库记录为准。
+
+详细安全模型见 [SECURITY-MODEL.md](SECURITY-MODEL.md)。
+
+## 8. 持续性与版本更新
+
+- Pass 的资格以 Stellaria 官方 canonical Credential 的实时状态为准；
+- Stellaria Studio 可以对未来版本的规则进行澄清或更新；
 - 对于在当时有效 Pass 与当时规则下已经合法公开的二创作品，后续规则调整原则上不要求追溯下架；法律要求、第三方权利争议或明显滥用情形除外。
 
-## 8. 与仓库 LICENSE 的关系
+## 9. 与仓库 LICENSE 的关系
 
 本仓库从 Cute-Dress/Dress 继承的历史内容继续适用仓库 [`LICENSE`](LICENSE) 及其各自权利归属。
 
@@ -81,4 +136,4 @@ Credential 的机器可读记录位于 `credentials/<github-login>.json`。
 
 **Dream. Commit. Push. Become.**
 
-然后拿着一张因为学 Git 或交了女装照得到的许可证去画角色二创。这个因果链已经非常 GitHub 了。（doge）
+然后拿着一张因为学 Git 或交了经人工核验的女装照得到的许可证去画角色二创。这个因果链仍然非常 GitHub。（doge）

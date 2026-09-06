@@ -1,0 +1,166 @@
+name: Verify Playground Tuition
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull Request number to review
+        required: true
+        type: string
+      route:
+        description: Tuition route being verified
+        required: true
+        type: choice
+        options:
+          - dress
+          - creative
+      confirm:
+        description: Type VERIFY after you have reviewed the contribution
+        required: true
+        type: string
+      note:
+        description: Optional maintainer note
+        required: false
+        type: string
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  verify:
+    if: github.repository == 'Stellaria-Studio/Stellaria-Git-PlayGround'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate and stamp tuition evidence
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+          ROUTE: ${{ inputs.route }}
+          CONFIRM: ${{ inputs.confirm }}
+          NOTE: ${{ inputs.note }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = Number.parseInt(process.env.PR_NUMBER || '', 10);
+            const route = String(process.env.ROUTE || '').trim().toLowerCase();
+            const confirm = String(process.env.CONFIRM || '').trim().toUpperCase();
+            const note = String(process.env.NOTE || '').trim();
+
+            if (!Number.isInteger(prNumber) || prNumber <= 0) {
+              core.setFailed('PR number must be a positive integer.');
+              return;
+            }
+            if (!['dress', 'creative'].includes(route)) {
+              core.setFailed('Route must be dress or creative.');
+              return;
+            }
+            if (confirm !== 'VERIFY') {
+              core.setFailed('Safety confirmation failed. Type VERIFY only after actually reviewing the contribution.');
+              return;
+            }
+
+            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: prNumber });
+            if (pr.state === 'closed' && !pr.merged_at) {
+              core.setFailed(`PR #${prNumber} is closed without merge and cannot receive tuition verification.`);
+              return;
+            }
+
+            const body = pr.body || '';
+            const marker = new RegExp(`<!--\\s*tuition:\\s*${route}\\s*-->`, 'i');
+            if (!marker.test(body)) {
+              core.setFailed(`PR #${prNumber} does not contain the ${route} tuition marker.`);
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner,
+              repo,
+              pull_number: prNumber,
+              per_page: 100,
+            });
+            const liveFiles = files.filter(file => file.status !== 'removed');
+            let evidenceFiles = [];
+
+            if (route === 'dress') {
+              evidenceFiles = liveFiles.filter(file => /^(?:[A-Z#]\/[^/]+\/).+\.(?:jpe?g|png|webp|gif|avif|heic)$/i.test(file.filename));
+              if (!evidenceFiles.length) {
+                core.setFailed('Dress Tuition requires at least one image in the traditional A-Z/#/nickname/ path.');
+                return;
+              }
+            } else {
+              const prefix = `playground/${String(pr.user?.login || '').toLowerCase()}/`;
+              evidenceFiles = liveFiles.filter(file => file.filename.toLowerCase().startsWith(prefix));
+              if (!evidenceFiles.length) {
+                core.setFailed(`Creative Tuition requires at least one file under ${prefix}`);
+                return;
+              }
+            }
+
+            const labelName = `tuition:verified:${route}`;
+            const labelColor = route === 'dress' ? 'd946ef' : '6366f1';
+            const labelDescription = route === 'dress'
+              ? 'Maintainer visually reviewed Dress Tuition evidence; eligible for credential/pass reconciliation.'
+              : 'Maintainer reviewed Creative Tuition evidence.';
+
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: labelName });
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              await github.rest.issues.createLabel({
+                owner,
+                repo,
+                name: labelName,
+                color: labelColor,
+                description: labelDescription,
+              });
+            }
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: prNumber,
+              labels: [labelName],
+            });
+
+            const visibleEvidence = evidenceFiles.slice(0, 12).map(file => `- \`${file.filename}\``);
+            const extra = evidenceFiles.length > 12 ? `\n- …and ${evidenceFiles.length - 12} more` : '';
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: [
+                '<!-- stellaria-tuition-verification -->',
+                `🛰️ **Mission Control · ${route === 'dress' ? 'Dress Tuition 👗' : 'Creative Tuition 🌟'} verified**`,
+                '',
+                `Verifier: @${context.actor}`,
+                `Gate label: \`${labelName}\``,
+                `Evidence candidates: ${evidenceFiles.length}`,
+                '',
+                ...visibleEvidence,
+                extra,
+                note ? `\nMaintainer note: ${note}` : '',
+                '',
+                route === 'dress'
+                  ? 'This stamp means a maintainer reviewed the submitted image contribution and its public-submission checklist. Automation alone never decides whether a photo is a valid Dress Tuition submission.'
+                  : 'This stamp records maintainer review of the Creative Tuition contribution.',
+              ].filter(Boolean).join('\n'),
+            });
+
+            if (pr.merged_at) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner,
+                  repo,
+                  workflow_id: 'stellaria_credentials.yml',
+                  ref: 'master',
+                });
+                core.notice('PR is already merged; credential reconciliation dispatched immediately.');
+              } catch (error) {
+                core.warning(`Tuition label was written, but credential reconciliation dispatch failed: ${error.message}`);
+              }
+            } else {
+              core.notice('Tuition evidence stamped. Credential reconciliation will run after the PR is merged.');
+            }
