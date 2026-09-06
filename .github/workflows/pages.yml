@@ -1,0 +1,78 @@
+name: Deploy Credential Verification Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'site/**'
+      - 'credentials/**'
+      - 'badges/**'
+      - 'CREDENTIALS.md'
+      - 'ACHIEVEMENTS.md'
+      - 'AETHRA-FANWORK-PASS.md'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout trusted master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Assemble static verification site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site/credentials _site/badges
+          cp -R site/. _site/
+          touch _site/.nojekyll
+
+          if compgen -G 'credentials/*.json' > /dev/null; then
+            cp credentials/*.json _site/credentials/
+          fi
+          if compgen -G 'badges/*.svg' > /dev/null; then
+            cp badges/*.svg _site/badges/
+          fi
+
+          cp CREDENTIALS.md _site/CREDENTIALS.md
+          cp ACHIEVEMENTS.md _site/ACHIEVEMENTS.md
+          cp AETHRA-FANWORK-PASS.md _site/AETHRA-FANWORK-PASS.md
+
+          cat > _site/build.json <<EOF
+          {
+            "repository": "${GITHUB_REPOSITORY}",
+            "commit": "${GITHUB_SHA}",
+            "built_at": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          }
+          EOF
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

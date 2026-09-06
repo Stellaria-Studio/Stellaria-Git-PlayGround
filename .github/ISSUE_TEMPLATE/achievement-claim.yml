@@ -1,0 +1,65 @@
+name: "🏆 Achievement claim"
+description: Claim a PlayGround bonus achievement with reproducible evidence.
+title: "[Achievement Claim] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Stellaria PlayGround · Achievement Claim
+        Bonus achievements are gameified project records. They do **not** grant repository permissions, Stellaria Studio membership, employment status, or professional certification.
+
+        Please provide public, reproducible evidence. Maintainers may reject a claim if the evidence is ambiguous, private, deleted, or unrelated to this repository.
+
+  - type: input
+    id: github_login
+    attributes:
+      label: GitHub Login
+      description: The holder of the credential to update.
+      placeholder: example
+    validations:
+      required: true
+
+  - type: dropdown
+    id: achievement
+    attributes:
+      label: Achievement
+      options:
+        - CONFLICT_SURVIVOR
+        - REBASE_ENJOYER
+        - CI_DESTROYER
+        - CI_REDEEMER
+        - UPSTREAM_NAVIGATOR
+        - MERGE_PILOT
+        - DOCS_ORBITER
+        - EXIF_PURIFIER
+        - BLOB_MINIMALIST
+        - HOTFIX_SURGEON
+        - PATCH_CARTOGRAPHER
+    validations:
+      required: true
+
+  - type: input
+    id: evidence
+    attributes:
+      label: Evidence URL
+      description: PR, commit, workflow run, issue, or another public GitHub URL that demonstrates the achievement.
+      placeholder: https://github.com/Stellaria-Studio/Stellaria-Git-PlayGround/pull/42
+    validations:
+      required: true
+
+  - type: textarea
+    id: explanation
+    attributes:
+      label: What happened?
+      description: Keep it short, but explain why the evidence actually satisfies the achievement.
+      placeholder: I resolved the merge conflict in ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Acknowledgement
+      options:
+        - label: I understand this is a PlayGround credential and not a real-world professional qualification or repository permission.
+          required: true

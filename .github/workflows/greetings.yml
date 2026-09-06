@@ -1,4 +1,4 @@
-name: Greetings
+name: Mission Control Greeting
 
 on: [pull_request_target]
 
@@ -9,8 +9,18 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-    - uses: actions/first-interaction@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        #issue-message: "Message that will be displayed on users' first issue"
-        pr-message: "你好 @${{ github.actor }}，感谢提交PR！\nHi @${{ github.actor }}, thanks for opening the Pull Request!\n我们会尽早审核回应😊\nWe will respond to it as soon as possible😊"
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-message: |
+            🌌 **Stellaria PlayGround Mission Control online.**
+
+            你好 @${{ github.actor }}，Telemetry 已收到。你的 PR 现在正在经历一套看起来很像航天器发射前检查、实际上主要是 Git / GitHub 基础流程的东西（doge）。
+
+            请保持 PR 模板中的自查项完整，等待 Checks 与 Review。Merge 后，Credential 系统会根据可验证的 Git 行为更新你的成就、Callsign、Clearance 与 SVG Badge。
+
+            - Credential spec: `CREDENTIALS.md`
+            - Achievement catalog: `ACHIEVEMENTS.md`
+            - Dress / Creative Tuition: `README.md`
+
+            **Dream. Commit. Push. Become.**
