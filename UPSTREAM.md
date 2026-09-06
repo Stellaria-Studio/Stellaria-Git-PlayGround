@@ -16,7 +16,77 @@ Before the first Stellaria-specific bootstrap commit, the repository history, ph
 
 Stellaria Studio does **not** claim authorship or ownership of those historical photos merely because they are present in this fork. Their original paths, commits, authors and contributor history remain part of the Git history and should be used as provenance.
 
-Future upstream synchronization may introduce additional upstream commits. When that happens, Git commit ancestry remains the primary source of truth for provenance.
+Future upstream synchronization may introduce additional upstream commits. Git ancestry remains the primary source of truth for provenance.
+
+## Guarded automatic synchronization
+
+The fork uses:
+
+```text
+.github/workflows/upstream_sync.yml
+```
+
+The workflow runs weekly and can also be triggered manually.
+
+It does **not** blindly call “sync master and hope for the best”. Instead it uses an `upstream-sync` staging branch:
+
+```text
+Cute-Dress/Dress
+       │
+       ▼
+upstream-sync
+       │
+       ├── legacy contribution paths only ──► auto merge
+       │
+       └── structural / Stellaria paths ─────► human-review PR
+```
+
+### Auto-merge allowlist
+
+Only changes whose paths are entirely inside the historical contribution buckets may auto-merge:
+
+```text
+A/
+B/
+...
+Z/
+#/
+```
+
+This covers the ordinary upstream photo/contributor growth that this fork primarily wants to retain.
+
+### Human-review paths
+
+Anything outside those contribution buckets is held for review, including but not limited to:
+
+- `README.md`
+- `LICENSE`
+- `CONTRIBUTING.md`
+- `.github/**`
+- workflows and PR templates
+- `credentials/**`
+- `badges/**`
+- `site/**`
+- `playground/**`
+- Stellaria-specific policy / credential / Aethra files
+
+This is deliberate supply-chain hygiene: a public upstream should not be able to silently replace this fork's trusted workflows, licensing text or credential logic just because a scheduled job ran.
+
+### Merge conflicts
+
+Conflicts are never auto-resolved.
+
+If GitHub cannot merge upstream into `upstream-sync`, the workflow opens (or updates) an issue titled roughly:
+
+```text
+Upstream sync conflict · manual resolution required
+```
+
+A maintainer must then decide what the correct merge should be.
+
+### Why stage instead of directly syncing master?
+
+Because Stellaria intentionally diverges from upstream in README, contribution rules, automation and extra licensing. A staging PR gives us a visible audit point while still letting ordinary legacy content stay synchronized with almost no maintenance.
 
 ## License continuity
 
