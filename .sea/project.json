@@ -1,0 +1,35 @@
+{
+  "schema": "stellaria.sea.project.v2",
+  "id": "Stellaria-Studio/Stellaria-Git-PlayGround",
+  "name": "Stellaria-Git-PlayGround",
+  "repository": "Stellaria-Studio/Stellaria-Git-PlayGround",
+  "defaultBranch": "master",
+  "tier": "R",
+  "profile": "example",
+  "purpose": "Git teaching and community archive. Inventory and contributor assets are separate from engineering product acceptance.",
+  "visibility": "public",
+  "concepts": ".sea/concepts.json",
+  "invariants": [
+    "Source and project contracts remain authoritative; declared capabilities need matching execution evidence."
+  ],
+  "runtime": {
+    "repository": "Stellaria-Studio/Stellaria-SEA",
+    "version": "2.0.0",
+    "protocol": 2,
+    "sourceCommit": "6207b585ffabb8d182432bb3a03ba4d0a5279aa6"
+  },
+  "legacy": {
+    "definition": "tools/sea/project.json",
+    "history": "read-only; preserve original bytes"
+  },
+  "features": {
+    "contextBroker": true,
+    "architectureRegistry": true,
+    "localTaskCapsules": true,
+    "identityBinding": false,
+    "approvalWorkflow": false,
+    "enforcement": false,
+    "automaticPush": false
+  },
+  "sourceBaseline": "0ee40751e1e01991db783ba580339d9fc2a7fec7"
+}

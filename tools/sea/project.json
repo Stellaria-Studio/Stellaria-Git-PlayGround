@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "name": "Stellaria-Git-PlayGround",
+  "components": {
+    "project": {
+      "description": "Git teaching and community archive. Inventory and contributor assets are separate from engineering product acceptance.",
+      "paths": [
+        "README.md"
+      ],
+      "approved": [
+        "README.md"
+      ],
+      "required_files": [
+        "README.md"
+      ],
+      "build_targets": [],
+      "validation": [],
+      "pitfalls": [
+        "Source and project contracts remain authoritative; declared capabilities need matching execution evidence."
+      ],
+      "evidence": []
+    }
+  },
+  "build_metadata": []
+}

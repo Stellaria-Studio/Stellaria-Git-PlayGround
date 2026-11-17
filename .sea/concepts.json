@@ -1,0 +1,33 @@
+[
+  {
+    "id": "project-architecture",
+    "name": "Stellaria-Git-PlayGround architecture",
+    "aliases": [
+      "Stellaria-Git-PlayGround",
+      "Git-PlayGround",
+      "架构",
+      "职责"
+    ],
+    "intent": "Git teaching and community archive. Inventory and contributor assets are separate from engineering product acceptance.",
+    "qualification": "DECLARED_PROJECT_KNOWLEDGE",
+    "invariants": [
+      "Source and project contracts remain authoritative; declared capabilities need matching execution evidence."
+    ],
+    "implementationPaths": [
+      "README.md"
+    ],
+    "dependsOn": [],
+    "acceptanceGates": [
+      "source identity",
+      "declared validation is not execution evidence"
+    ],
+    "sources": [
+      {
+        "path": "README.md",
+        "line": 1,
+        "commit": "0ee40751e1e01991db783ba580339d9fc2a7fec7"
+      }
+    ],
+    "validation": []
+  }
+]
